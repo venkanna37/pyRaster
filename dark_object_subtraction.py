@@ -20,7 +20,6 @@ outdata = outdriver.Create(str(outfile), rows, cols, 4, gdal.GDT_Float32)
 
 
 # Dark object subtraction from each band (minimum pixel value)
-bands = []
 for band in range(image.RasterCount):
     band += 1
     stats = image.GetRasterBand(band).GetStatistics(True, True)
@@ -28,7 +27,7 @@ for band in range(image.RasterCount):
     bandarray = np.array(image.GetRasterBand(band).ReadAsArray())
 
     # Write the array to the file
-    outdata.GetRasterBand(band).WriteArray(bandarray)
+    outdata.GetRasterBand(band).WriteArray(bandarray-minimum)
 
     # Georeference the image
     outdata.SetGeoTransform(trans)
